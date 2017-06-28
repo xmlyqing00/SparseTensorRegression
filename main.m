@@ -7,9 +7,9 @@ clc;
 clear all;
 
 y = tensor(rand(4,3,2));
-components = cp_als(y, 2);
+components = cp_als(y, 10);
 
-disp(components.U{1}(1));
+disp(y);
 
 x = ComposeTensor(components);
 disp(x);

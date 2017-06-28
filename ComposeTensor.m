@@ -10,9 +10,18 @@ for i = 1:D_way
     dims(i) = rows;
 end
 
-for i = 1:D_way
-    
+composedArray = zeros(dims);
+for r = 1:rank
+    tmpArray = 1;
+    for i = 1:D_way
+        tmpArray = kron(components.U{i}(:,r), tmpArray);
+    end
+    tmpArray = reshape(tmpArray, dims);
+    tmpArray = components.lambda(r) .* tmpArray; 
+    composedArray = composedArray + tmpArray;
 end
+
+composedTensor = tensor(composedArray);
 
 end
 
