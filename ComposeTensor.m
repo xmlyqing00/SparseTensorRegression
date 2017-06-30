@@ -1,12 +1,14 @@
-function [ composedTensor ] = ComposeTensor( components )
-%ComposeTensor Compose vectors to a tensor.
-%   Input argument must be a cp_als result variable.
+% Author:   Space Lyq
+% Homepage: www.lyq.me
+% Email:    root [at] lyq.me
 
-rank = length(components.lambda);
-D_way = length(components.U);
+function [ composedTensor ] = ComposeTensor( components )
+%ComposeTensor Compose a tensor by components.
+
+D_way = length(components);
 dims = [];
 for i = 1:D_way
-    [rows, cols] = size(components.U{i});
+    [rows, rank] = size(components{i});
     dims(i) = rows;
 end
 
@@ -14,10 +16,9 @@ composedArray = zeros(dims);
 for r = 1:rank
     tmpArray = 1;
     for i = 1:D_way
-        tmpArray = kron(components.U{i}(:,r), tmpArray);
+        tmpArray = kron(components{i}(:,r), tmpArray);
     end
     tmpArray = reshape(tmpArray, dims);
-    tmpArray = components.lambda(r) .* tmpArray; 
     composedArray = composedArray + tmpArray;
 end
 
