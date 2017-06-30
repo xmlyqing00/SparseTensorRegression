@@ -1,7 +1,3 @@
-% Author:   Space Lyq
-% Homepage: www.lyq.me
-% Email:    root [at] lyq.me
-
 function [ composedTensor ] = ComposeTensor( components )
 %ComposeTensor Compose a tensor by components.
 

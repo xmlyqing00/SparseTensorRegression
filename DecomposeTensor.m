@@ -1,7 +1,3 @@
-% Author:   Space Lyq
-% Homepage: www.lyq.me
-% Email:    root [at] lyq.me
-
 function [ components ] = DecomposeTensor( inputTensor, rank )
 %DecomposeTensor Decompose the input tensor into components.
 
