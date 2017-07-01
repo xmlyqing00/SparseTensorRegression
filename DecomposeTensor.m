@@ -1,5 +1,8 @@
 function [ components ] = DecomposeTensor( inputTensor, rank )
 %DecomposeTensor Decompose the input tensor into components.
+%   inputTensor is a tensor. 
+%   rank is the argument for the cp_als(X,R).
+%   The output components is multiplied by the estimated lambdas.
 
 tensorComponents = cp_als(inputTensor, rank);
 D_way = length(tensorComponents.U);

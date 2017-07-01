@@ -1,5 +1,7 @@
 function [ composedTensor ] = ComposeTensor( components )
 %ComposeTensor Compose a tensor by components.
+%   Components is a cell of matrixs. The matrix size is [dim, rank].
+%   The composedTensor is the outer production of the input components.
 
 D_way = length(components);
 dims = [];

@@ -4,10 +4,15 @@
 
 clc;
 clear all;
+close all;
 
-y = tensor(rand(4,3,2));
-components = DecomposeTensor(y, 10);
-disp(y);
-disp(components);
-x = ComposeTensor(components);
-disp(x);
+GeneratePattern([64, 64]);
+
+datasetSizeTotal = 750;
+responseNum = 3;
+correlation = 0.9;
+noiseLevel = 10;
+patternArray = [1, 2];
+predictorSize = [64, 64];
+[trainingSet, validationSet, testingSet] = GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray);
+
