@@ -5,21 +5,22 @@ function [ funcValue ] = CalcObjFunc( models, lambda, dataset )
 [datasetSize, cols] = size(dataset);
 responseNum = cols - 1;
 modelsTensor = cell(1, responseNum);
-for i = 1:responseNum
-    modelsTensor{i} = ComposeTensor(models{i});
+for q = 1:responseNum
+    modelsTensor{q} = ComposeTensor(models{q});
 end
 
 D_way = length(models{1});
 
-dims = zeros(D_way);
-for i = 1:D_way
-    [dims(i), rank] = size(models{1}{i});
+dims = zeros(1, D_way);
+for d = 1:D_way
+    [dims(d), rank] = size(models{1}{d});
 end
 
 funcValuePart1 = 0;
 for dataIndex = 1:datasetSize
-    for i = 1:responseNum
-        funcValuePart1 = funcValuePart1 + ttt(modelsTensor{i}, tensor(dataset(i, cols)), 1:D_way);
+    for q = 1:responseNum
+        loss = (dataset{dataIndex, q} - ttt(modelsTensor{q}, tensor(dataset{dataIndex, cols}), 1:D_way)) ^ 2;
+        funcValuePart1 = funcValuePart1 + loss;
     end
 end
 
@@ -28,15 +29,15 @@ for d = 1:D_way
     for r = 1:rank
         for i = 1:dims(d)
             tmp = 0;
-            for j = 1:responseNum
-                tmp = tmp + models{j}{d}(i,r) ^ 2;
+            for q = 1:responseNum
+                tmp = tmp + models{q}{d}(i,r) ^ 2;
             end
             funcValuePart2 = funcValuePart2 + tmp ^ 0.5;
         end
     end
 end
 
-funcValue = funcValue1 + lambda * funcValue2;
+funcValue = funcValuePart1 + lambda * funcValuePart2;
 
 end
 
