@@ -23,16 +23,17 @@ for dataIndex = 1:datasetSize
         funcValuePart1 = funcValuePart1 + loss;
     end
 end
+funcValuePart1 = funcValuePart1 / datasetSize;
 
 funcValuePart2 = 0;
 for d = 1:D_way
     for r = 1:rank
         for i = 1:dims(d)
-            tmp = 0;
+            sumResult = 0;
             for q = 1:responseNum
-                tmp = tmp + models{q}{d}(i,r) ^ 2;
+                sumResult = sumResult + models{q}{d}(i,r) ^ 2;
             end
-            funcValuePart2 = funcValuePart2 + tmp ^ 0.5;
+            funcValuePart2 = funcValuePart2 + sumResult ^ 0.5;
         end
     end
 end

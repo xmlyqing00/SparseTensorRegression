@@ -17,6 +17,14 @@ models = InitModels(responseNum, D_way, dims, rank);
 trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 validationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
+models{1}{1}(2,2) = 0.0006;
+t1 = CalcObjFunc(models, lambda, trainingSet);
+models{1}{1}(2,2) = 0.0004;
+t2 = CalcObjFunc(models, lambda, trainingSet);
+x = (t1 - t2) / (0.0002);
+disp(x);
+figure;
+
 for iter = 1:iterTotal
     
     disp(iter);
@@ -35,21 +43,24 @@ for iter = 1:iterTotal
     end
     
     for dataIndex = 1:trainingSetSize
+        
+        trainingDataTensor = tensor(trainingSet{dataIndex, cols});
+        
         for q = 1:responseNum
-            diff0 = 2 * (trainingSet{dataIndex, q} - ttt(modelsTensor{q}, tensor(trainingSet{dataIndex, cols}), 1:D_way));
+            diff0 = -2 * (trainingSet{dataIndex, q} - ttt(modelsTensor{q}, trainingDataTensor, 1:D_way));
             for r = 1:rank               
                 for d = 1:D_way
                     for i = 1:dims(d)
                         
-                        singleComponent = cell(1, D_way);
+                        diffComponent = cell(1, D_way);
                         for d2 = 1:D_way
-                            singleComponent{d2} = models{q}{d2}(:,r);
+                            diffComponent{d2} = models{q}{d2}(:,r);
                         end
-                        singleComponent{d}(:,1) = 0;
-                        singleComponent{d}(i,1) = 1;
-                        singleTensor = ComposeTensor(singleComponent);
+                        diffComponent{d}(:,1) = 0;
+                        diffComponent{d}(i,1) = 1;
+                        diffTensor = ComposeTensor(diffComponent);
                         
-                        diff = diff0 * -ttt(singleTensor, tensor(trainingSet{dataIndex, cols}), 1:D_way);
+                        diff = diff0 * ttt(diffTensor, trainingDataTensor, 1:D_way);
                         modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + diff;
                         
                     end
@@ -67,17 +78,27 @@ for iter = 1:iterTotal
     for d = 1:D_way
         for r = 1:rank
             for i = 1:dims(d)
+                
                 sumResult = 0;
                 for q = 1:responseNum
                     sumResult = sumResult + (models{q}{d}(i,r)) ^ 2;
                 end
+                sumResult = sumResult .^ 2;
+                
+                if sumResult == 0
+                    continue;
+                end
+                
                 for q = 1:responseNum
                     diff = models{q}{d}(i,r) / sumResult;
                     modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + lambda * diff;
                 end
+                
             end
         end
     end
+    
+    disp(modelsGrad{1}{1}(2,2));
     
     newModels = models;
     for q = 1:responseNum
@@ -87,32 +108,48 @@ for iter = 1:iterTotal
     end
     
     preTrainingFuncValue = trainingFuncValue;
-    trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
-    
+    trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet);  
     disp(learningRate);
     disp(preTrainingFuncValue);
     disp(trainingFuncValue);
     
-    if trainingFuncValue >= preTrainingFuncValue
+    while trainingFuncValue >= preTrainingFuncValue
+        
         learningRate = learningRate / 2;
         if learningRate < minLearningRate
             break;
         end
-    else
-        models = newModels;
-        
-        t = ComposeTensor(models{1});
-        tt = zeros(64, 64);
-        tt(:) = t(:);
-        figure;
-        imshow(tt);
-        
-        preValidationFuncValue = validationFuncValue;
-        validationFuncValue = CalcObjFunc(models, lambda, validationSet);
-        if validationFuncValue >= preValidationFuncValue
-            % break;
+        for q = 1:responseNum
+            for d = 1:D_way
+                newModels{q}{d} = models{q}{d} - learningRate * modelsGrad{q}{d};
+            end
         end
+
+        trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
+        disp(learningRate);
+        disp(preTrainingFuncValue);
+        disp(trainingFuncValue);
+    
     end
+
+    if trainingFuncValue < preTrainingFuncValue
+        models = newModels;
+    else
+        break;
+    end
+
+    t = ComposeTensor(models{1});
+    tt = zeros(64, 64);
+    tt(:) = t(:);
+    imshow(tt);
+
+    preValidationFuncValue = validationFuncValue;
+    validationFuncValue = CalcObjFunc(models, lambda, validationSet);
+    if validationFuncValue >= preValidationFuncValue
+        % break;
+    end
+    
+    disp(' ');
     
 end
 
