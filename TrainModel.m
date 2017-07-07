@@ -140,11 +140,7 @@ for iter = 1:iterTotal
         break;
     end
 
-    t = ComposeTensor(models{1});
-    %disp(t);
-    tt = zeros(dims);
-    tt(:) = t(:);
-    imwrite(tt, ['training/', num2str(iter), '.bmp']);
+    SaveTrainingStatus(iter, models);
 
     preValidationFuncValue = validationFuncValue;
     validationFuncValue = CalcObjFunc(models, lambda, validationSet);
