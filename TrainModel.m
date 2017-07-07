@@ -1,33 +1,35 @@
-function [ models ] = TrainModel( lambda, trainingSet, validationSet )
+function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 %TrainModel Train the models by trainingSet and validationSet.
 %   Formula: Y = BX + e
 %   Given Y and X, train model B.
 
-iterTotal = 1000;
-learningRate = 0.01;
-minLearningRate = 0.000001;
+iterTotal = 200;
+learningRate = 1e-3;
+minLearningRate = 1e-7;
 [trainingSetSize, cols] = size(trainingSet);
 
 responseNum = cols - 1;
 dims = size(trainingSet{1, cols});
 D_way = length(dims);
-rank = 3;
 models = InitModels(responseNum, D_way, dims, rank);
+
+% load('data/pattern3.mat', 'pattern');
+% models = cell(1, 2);
+% models{1} = DecomposeTensor(tensor(pattern), rank);
+% models{2} = models{1};
 
 trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 validationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
-models{1}{1}(2,2) = 0.0006;
-t1 = CalcObjFunc(models, lambda, trainingSet);
-models{1}{1}(2,2) = 0.0004;
-t2 = CalcObjFunc(models, lambda, trainingSet);
-x = (t1 - t2) / (0.0002);
-disp(x);
-figure;
-
 for iter = 1:iterTotal
     
     disp(iter);
+    models{1}{2}(2,1) = models{1}{2}(2,1) + 1e-5;
+    t1 = CalcObjFunc(models, lambda, trainingSet);
+    models{1}{2}(2,1) = models{1}{2}(2,1) - 2e-5;
+    t2 = CalcObjFunc(models, lambda, trainingSet);
+    x = (t1 - t2) / (2e-5);
+    disp(x);
     
     modelsTensor = cell(1, responseNum);
     for q = 1:responseNum
@@ -69,11 +71,11 @@ for iter = 1:iterTotal
         end
     end
     
-    for q = 1:responseNum
-        for d = 1:D_way
-            modelsGrad{q}{d} = modelsGrad{q}{d} / trainingSetSize;
-        end
-    end
+%     for q = 1:responseNum
+%         for d = 1:D_way
+%             modelsGrad{q}{d} = modelsGrad{q}{d} / trainingSetSize;
+%         end
+%     end
     
     for d = 1:D_way
         for r = 1:rank
@@ -83,7 +85,7 @@ for iter = 1:iterTotal
                 for q = 1:responseNum
                     sumResult = sumResult + (models{q}{d}(i,r)) ^ 2;
                 end
-                sumResult = sumResult .^ 2;
+                sumResult = sumResult ^ 0.5;
                 
                 if sumResult == 0
                     continue;
@@ -98,7 +100,7 @@ for iter = 1:iterTotal
         end
     end
     
-    disp(modelsGrad{1}{1}(2,2));
+    disp(modelsGrad{1}{2}(2,1));
     
     newModels = models;
     for q = 1:responseNum
@@ -139,14 +141,18 @@ for iter = 1:iterTotal
     end
 
     t = ComposeTensor(models{1});
-    tt = zeros(64, 64);
+    %disp(t);
+    tt = zeros(dims);
     tt(:) = t(:);
-    imshow(tt);
+    imwrite(tt, ['training/', num2str(iter), '.bmp']);
 
     preValidationFuncValue = validationFuncValue;
     validationFuncValue = CalcObjFunc(models, lambda, validationSet);
+    disp('validation');
+    disp(preValidationFuncValue);
+    disp(validationFuncValue);
     if validationFuncValue >= preValidationFuncValue
-        % break;
+        break;
     end
     
     disp(' ');

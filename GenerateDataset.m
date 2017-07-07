@@ -2,7 +2,7 @@ function [ returnStatus ] = GenerateDataset( datasetSizeTotal, predictorSize, re
 %GenerateDataset Generate three datasets: training, validation and testing.
 %   If the three datasets exist, then skip this function.
 
-if exist('trainingSet.mat', 'file') ~= 0 && exist('trainingSet.mat', 'file') ~= 0 && exist('trainingSet.mat', 'file') ~= 0
+if exist('data/trainingSet.mat', 'file') ~= 0 && exist('data/trainingSet.mat', 'file') ~= 0 && exist('data/trainingSet.mat', 'file') ~= 0
     return;
 end
 
@@ -12,9 +12,9 @@ trainingSet = GenerateData( datasetSize, predictorSize, responseNum, correlation
 validationSet = GenerateData( datasetSize, predictorSize, responseNum, correlation, noiseLevel, patternArray);
 testingSet = GenerateData( datasetSize, predictorSize, responseNum, correlation, noiseLevel, patternArray);
 
-save('trainingSet.mat', 'trainingSet');
-save('validationSet.mat', 'validationSet');
-save('testingSet.mat', 'testingSet');
+save('data/trainingSet.mat', 'trainingSet');
+save('data/validationSet.mat', 'validationSet');
+save('data/testingSet.mat', 'testingSet');
 
 returnStatus = true;
 

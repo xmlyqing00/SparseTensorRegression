@@ -3,7 +3,7 @@ function [ returnStatus ] = GeneratePattern( patternSize )
 %   If the pattern files exist, then skip this function.
 
 %Check pattern files.
-if exist('pattern1.mat', 'file') ~= 0 && exist('pattern2.mat', 'file') ~= 0
+if exist('data/pattern1.mat', 'file') ~= 0 && exist('data/pattern2.mat', 'file') ~= 0 && exist('data/pattern3.mat', 'file') ~= 0
     return;
 end
 
@@ -11,8 +11,8 @@ end
 pattern = ones(patternSize);
 pattern(30:35, 17:48) = 0;
 pattern(17:48, 30:35) = 0;
-imwrite(pattern, 'pattern1.bmp');
-save('pattern1.mat', 'pattern');
+imwrite(pattern, 'data/pattern1.bmp');
+save('data/pattern1.mat', 'pattern');
 
 %Pattern Triangle
 pattern = ones(patternSize);
@@ -27,8 +27,15 @@ for y = marginY:patternSize-marginY
         break;
     end
 end
-imwrite(pattern, 'pattern2.bmp');
-save('pattern2.mat', 'pattern');
+imwrite(pattern, 'data/pattern2.bmp');
+save('data/pattern2.mat', 'pattern');
+
+%Pattern small
+pattern = zeros(3, 3);
+pattern(3,2) = 1;
+pattern(2,3) = 1;
+imwrite(pattern, 'data/pattern3.bmp');
+save('data/pattern3.mat', 'pattern');
 
 returnStatus = true;
 

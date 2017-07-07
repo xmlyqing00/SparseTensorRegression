@@ -23,7 +23,7 @@ for dataIndex = 1:datasetSize
         funcValuePart1 = funcValuePart1 + loss;
     end
 end
-funcValuePart1 = funcValuePart1 / datasetSize;
+%funcValuePart1 = funcValuePart1 / datasetSize;
 
 funcValuePart2 = 0;
 for d = 1:D_way

@@ -1,3 +1,5 @@
 *.asv
-pattern*.bmp
-pattern*.mat
+training/*.bmp
+
+
+Thumbs.db
