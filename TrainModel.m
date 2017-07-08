@@ -147,7 +147,7 @@ for iter = 1:iterTotal
     disp('validation');
     disp(preValidationFuncValue);
     disp(validationFuncValue);
-    if validationFuncValue >= preValidationFuncValue
+    if validationFuncValue >= 1.2 * preValidationFuncValue
         break;
     end
     
