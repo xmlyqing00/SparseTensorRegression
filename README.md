@@ -13,23 +13,8 @@ This repository implements the core function of paper *"Sparse Multi-Response Te
 - Small sample test: Passed.
 
   We choose a 3x3 matrix as pattern and train the model. The training process converges after 50 iterations.
-  ![equation](http://latex.codecogs.com/gif.latex?Generated&space;Pattern=\begin{vmatrix}&space;0&space;&&space;0&space;&&space;0&space;\\&space;0&space;&&space;0&space;&&space;1&space;\\&space;0&space;&&space;1&space;&&space;0&space;\\&space;\end{vmatrix})
-
-
-$$
-Generated Pattern = \begin{vmatrix}
-  0 & 0 & 0 \\
-  0 & 0 & 1 \\
-  0 & 1 & 0 \\
-  \end{vmatrix}
-$$
-$$
-  Estimated Pattern = \begin{vmatrix}
-  -0.003 & 0.001 & 0.012 \\
-  0.012 & 0.130 & 0.897 \\
-  -0.008 & 0.922 & 0.087 \\
-  \end{vmatrix}
-$$
+  ![equation](http://latex.codecogs.com/gif.latex?Generated%20Pattern%3D%5Cbegin%7Bbmatrix%7D%200%20%26%200%20%26%200%5C%5C%200%20%26%200%20%26%201%5C%5C%200%20%26%201%20%26%200%20%5Cend%7Bbmatrix%7D)
+  ![equation](http://latex.codecogs.com/gif.latex?Estimated%20Pattern%20%3D%20%5Cbegin%7Bbmatrix%7D%20-0.003%20%26%200.001%20%26%200.012%20%5C%5C%200.012%20%26%200.130%20%26%200.897%20%5C%5C%20-0.008%20%26%200.922%20%26%200.087%20%5C%5C%20%5Cend%7Bbmatrix%7D)
 
 - Medium sample test: Undergoing.
 
