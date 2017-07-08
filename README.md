@@ -14,6 +14,21 @@ This repository implements the core function of paper *"Sparse Multi-Response Te
 
   We choose a 3x3 matrix as pattern and train the model. The training process converges after 50 iterations.
 
+  $$
+  Generated Pattern = \begin{vmatrix}
+  0 & 0 & 0 \\
+  0 & 0 & 1 \\
+  0 & 1 & 0 \\
+  \end{vmatrix}
+  $$
+  $$
+  Estimated Pattern = \begin{vmatrix}
+  -0.003 & 0.001 & 0.012 \\
+  0.012 & 0.130 & 0.897 \\
+  -0.008 & 0.922 & 0.087 \\
+  \end{vmatrix}
+  $$
+
 - Medium sample test: Undergoing.
 
 ## Documents
