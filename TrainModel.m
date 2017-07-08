@@ -3,16 +3,24 @@ function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 %   Formula: Y = BX + e
 %   Given Y and X, train model B.
 
-iterTotal = 200;
+startIter = 201;
+iterTotal = 2000;
 learningRate = 1e-3;
 minLearningRate = 1e-7;
-[trainingSetSize, cols] = size(trainingSet);
+overfittingRate = 2;
 
+[trainingSetSize, cols] = size(trainingSet);
 responseNum = cols - 1;
 dims = size(trainingSet{1, cols});
 D_way = length(dims);
-models = InitModels(responseNum, D_way, dims, rank);
 
+% Initialize the random models.
+%models = InitModels(responseNum, D_way, dims, rank);
+
+% Load models from files.
+models = LoadModels(startIter, responseNum);
+
+% Set the models as the target models.
 % load('data/pattern3.mat', 'pattern');
 % models = cell(1, 2);
 % models{1} = DecomposeTensor(tensor(pattern), rank);
@@ -21,15 +29,15 @@ models = InitModels(responseNum, D_way, dims, rank);
 trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 validationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
-for iter = 1:iterTotal
+for iter = startIter+1:iterTotal
     
     disp(iter);
-    models{1}{2}(2,1) = models{1}{2}(2,1) + 1e-5;
-    t1 = CalcObjFunc(models, lambda, trainingSet);
-    models{1}{2}(2,1) = models{1}{2}(2,1) - 2e-5;
-    t2 = CalcObjFunc(models, lambda, trainingSet);
-    x = (t1 - t2) / (2e-5);
-    disp(x);
+%     models{1}{2}(2,1) = models{1}{2}(2,1) + 1e-5;
+%     t1 = CalcObjFunc(models, lambda, trainingSet);
+%     models{1}{2}(2,1) = models{1}{2}(2,1) - 2e-5;
+%     t2 = CalcObjFunc(models, lambda, trainingSet);
+%     x = (t1 - t2) / (2e-5);
+%     disp(x);
     
     modelsTensor = cell(1, responseNum);
     for q = 1:responseNum
@@ -147,7 +155,7 @@ for iter = 1:iterTotal
     disp('validation');
     disp(preValidationFuncValue);
     disp(validationFuncValue);
-    if validationFuncValue >= 1.2 * preValidationFuncValue
+    if validationFuncValue >= overfittingRate * preValidationFuncValue
         break;
     end
     
