@@ -8,7 +8,7 @@ The multivariate tensor regression model is Eq.(3)
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BY%7D%20%3D%20%5Cmathbf%7BB%7D%20%5Cmathbf%7BX%7D%20&plus;%20%5Cmathbf%7Be%7D)
 
-![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BY%7D%20%3D%20%5Cbegin%7Bbmatrix%7D%20%3C%5Csum_%7Br%3D1%7D%5E%7BR%7D%5Cbeta_%7B11%7D%5E%7B%28r%29%7D%5Ccirc%5Ccdots%5Ccirc%5Cbeta_%7B1D%7D%5E%7B%28r%29%7D%2C%5Cmathbf%7BX%7D%3E%20%5C%5C%20%5Cvdots%5C%5C%20%3C%5Csum_%7Br%3D1%7D%5E%7BR%7D%5Cbeta_%7Bq1%7D%5E%7B%28r%29%7D%5Ccirc%5Ccdots%5Ccirc%5Cbeta_%7BqD%7D%5E%7B%28r%29%7D%2C%5Cmathbf%7BX%7D%3E%20%5Cend%7Bbmatrix%7D%20&plus;%20%5Cmathbf%7Be%7D)
+![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BY%7D%20%3D%20%5Cbegin%7Bbmatrix%7D%20%3C%5Csum_%7Br%3D1%7D%5E%7BR%7D%5Cmathbf%7B%5Cbeta_%7B11%7D%5E%7B%28r%29%7D%7D%5Ccirc%5Ccdots%5Ccirc%5Cmathbf%7B%5Cbeta_%7B1D%7D%5E%7B%28r%29%7D%7D%2C%5Cmathbf%7BX%7D%3E%20%5C%5C%20%5Cvdots%5C%5C%20%3C%5Csum_%7Br%3D1%7D%5E%7BR%7D%5Cmathbf%7B%5Cbeta_%7Bq1%7D%5E%7B%28r%29%7D%7D%5Ccirc%5Ccdots%5Ccirc%5Cmathbf%7B%5Cbeta_%7BqD%7D%5E%7B%28r%29%7D%7D%2C%5Cmathbf%7BX%7D%3E%20%5Cend%7Bbmatrix%7D%20&plus;%20%5Cmathbf%7Be%7D)
 
 Firstly, we generate the model **B** following specified patterns and simulate **X** and **e** following  a normal distribution. The response variables **Y** are calcualted by **B**, **X** and **e**. Given *n* independent and identically distributed sample observations 
 
@@ -16,13 +16,13 @@ Firstly, we generate the model **B** following specified patterns and simulate *
 
 we sperate them into three datasets: training set, validation set and testing set. 
 
-Then we minimize the objective function Eq.(5) to estimate the models' parameters.
+Then we minimize the objective function Eq.(5) using mini-batch gradient descending algorithm to estimate the models' parameters.
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Cell%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Cmathbf%7BL%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20&plus;%20%5Clambda%5Cmathbf%7BJ%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29)
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BL%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Csum_%7Bj%3D1%7D%5E%7Bq%7D%5CBig%28Y_%7Bij%7D-%3C%5Csum_%7Br%3D1%7D%5ER%5Cbeta_%7Bj1%7D%5E%7B%28r%29%7D%5Ccirc%5Ccdots%5Ccirc%5Cbeta_%7BjD%7D%5E%7B%28r%29%7D%2C%5Cmathbf%7BX%7D_i%3E%5CBig%29%5E2)
 
-![equation]()
+![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BJ%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Csum_%7Bd%3D1%7D%5ED%5Csum_%7Br%3D1%7D%5ER%5Csum_%7Bk%3D1%7D%5E%7Bp_D%7D%5CBig%28%5Csum_%7Bj%3D1%7D%5Eq%7B%5Cbeta_%7Bjdk%7D%5E%7B%28r%29%7D%7D%5E2%5CBig%29%5E%7B1/2%7D)
 
 ## How to Use
 
