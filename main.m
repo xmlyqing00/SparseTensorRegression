@@ -16,7 +16,7 @@ noiseLevel = 5;
 patternArray = [1, 2];
 GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray);
 
-lambda = 10;
+lambda = 0;
 rank = 2;
 load('data/trainingSet.mat', 'trainingSet');
 load('data/validationSet.mat', 'validationSet');

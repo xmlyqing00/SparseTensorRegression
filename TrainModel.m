@@ -5,10 +5,10 @@ function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 
 iterStart = 0;
 iterTotal = 2000;
-learningRate0 = 1e-3;
-minLearningRate = 1e-7;
-overfittingRate = 1.5;
-shakyRate = 1.2;
+learningRate0 = 1e-2;
+minLearningRate = 1e-6;
+overfittingRate = 1.1;
+shakyRate = 1.1;
 sampleSetSize = 10;
 
 [trainingSetSize, cols] = size(trainingSet);
@@ -25,10 +25,11 @@ else
 end
 
 % Set the models as the target models.
-% load('data/pattern3.mat', 'pattern');
 % models = cell(1, 2);
+% load('data/pattern2.mat', 'pattern');
 % models{1} = DecomposeTensor(tensor(pattern), rank);
-% models{2} = models{1};
+% load('data/pattern1.mat', 'pattern');
+% models{2} = DecomposeTensor(tensor(pattern), rank);
 
 trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 minValidationFuncValue = CalcObjFunc(models, lambda, validationSet);
@@ -117,6 +118,7 @@ for iter = iterStart+1:iterTotal
         end
     end
     
+    disp('gradient');
     disp(modelsGrad{1}{2}(2,1));
     
     learningRate = learningRate0;
@@ -153,6 +155,7 @@ for iter = iterStart+1:iterTotal
         break;
     end
     
+    disp('training');
     disp(learningRate);
     disp(preTrainingFuncValue);
     disp(trainingFuncValue);
