@@ -43,7 +43,7 @@ We choose a 3x3 matrix as pattern and train the model. The training process conv
 
 The training process is **slow** due to my out of date laptop.
 
-![summary]('training/summary.png')
+![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary.png)
 
 ## Documents
 
@@ -52,6 +52,7 @@ The training process is **slow** due to my out of date laptop.
 - **CalcObjFunc.m** Calculate the value of objective function Eq.(5).
 - **ComposeTensor.m** Compose the components to a tensor. This is the inverse operation of CP decomposition.
 - **DecomposeTensor.m** Decompose the tensor to the components by the input argument *rank*. The actual decomposition method is CP decomposition *cp_als*.
+- **DrawTrainingResults.m** Draw the training results that were saved in the *training/* folder and compare between the generated pattern and the estimated patterns.
 - **GenerateData.m** Generate the data by input arguments and store them in the *./data/* folder.
 - **GenerateDataset.m** Generate all three datasets: training, validation and testing. It calls *GenerateData.m* to generate data.
 - **GeneratePattern.m** Generate the default patterns and store them in the *./data/* folder.
