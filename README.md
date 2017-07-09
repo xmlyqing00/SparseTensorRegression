@@ -20,7 +20,7 @@ Then we minimize the objective function Eq.(5) using mini-batch gradient descend
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Cell%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Cmathbf%7BL%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20&plus;%20%5Clambda%5Cmathbf%7BJ%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29)
 
-![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BL%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Csum_%7Bj%3D1%7D%5E%7Bq%7D%5CBig%28Y_%7Bij%7D-%3C%5Csum_%7Br%3D1%7D%5ER%5Cbeta_%7Bj1%7D%5E%7B%28r%29%7D%5Ccirc%5Ccdots%5Ccirc%5Cbeta_%7BjD%7D%5E%7B%28r%29%7D%2C%5Cmathbf%7BX%7D_i%3E%5CBig%29%5E2)
+![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BL%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Csum_%7Bj%3D1%7D%5E%7Bq%7D%5CBig%28Y_%7Bij%7D-%3C%5Csum_%7Br%3D1%7D%5ER%5Cbeta_%7Bj1%7D%5E%7B%28r%29%7D%5Ccirc%5Ccdots%5Ccirc%5Cbeta_%7BjD%7D%5E%7B%28r%29%7D%2C%5Cmathbf%7BX%7D_i%3E%5CBig%29%5E2)
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7BJ%7D%28%5Cmathbf%7BB%7D_1%2C%5Ccdots%2C%5Cmathbf%7BB%7D_q%29%20%3D%20%5Csum_%7Bd%3D1%7D%5ED%5Csum_%7Br%3D1%7D%5ER%5Csum_%7Bk%3D1%7D%5E%7Bp_D%7D%5CBig%28%5Csum_%7Bj%3D1%7D%5Eq%7B%5Cbeta_%7Bjdk%7D%5E%7B%28r%29%7D%7D%5E2%5CBig%29%5E%7B1/2%7D)
 
