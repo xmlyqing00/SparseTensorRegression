@@ -3,22 +3,26 @@ function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 %   Formula: Y = BX + e
 %   Given Y and X, train model B.
 
-startIter = 201;
+iterStart = 0;
 iterTotal = 2000;
-learningRate = 1e-3;
+learningRate0 = 1e-3;
 minLearningRate = 1e-7;
-overfittingRate = 2;
+overfittingRate = 1.5;
+shakyRate = 1.2;
+sampleSetSize = 10;
 
 [trainingSetSize, cols] = size(trainingSet);
 responseNum = cols - 1;
 dims = size(trainingSet{1, cols});
 D_way = length(dims);
 
-% Initialize the random models.
-%models = InitModels(responseNum, D_way, dims, rank);
-
-% Load models from files.
-models = LoadModels(startIter, responseNum);
+if iterStart == 0
+    % Initialize the random models.
+    models = InitModels(responseNum, D_way, dims, rank);
+else
+    % Load models from files.
+    models = LoadModels(iterStart, responseNum);
+end
 
 % Set the models as the target models.
 % load('data/pattern3.mat', 'pattern');
@@ -27,9 +31,9 @@ models = LoadModels(startIter, responseNum);
 % models{2} = models{1};
 
 trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
-validationFuncValue = CalcObjFunc(models, lambda, validationSet);
+minValidationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
-for iter = startIter+1:iterTotal
+for iter = iterStart+1:iterTotal
     
     disp(iter);
 %     models{1}{2}(2,1) = models{1}{2}(2,1) + 1e-5;
@@ -52,12 +56,16 @@ for iter = startIter+1:iterTotal
         end
     end
     
-    for dataIndex = 1:trainingSetSize
+    sampleSetArray = round(rand(1, sampleSetSize) * (trainingSetSize - 1)) + 1;
+    
+    for sampleSetIndex = 1:sampleSetSize
         
-        trainingDataTensor = tensor(trainingSet{dataIndex, cols});
+        trainingSetIndex = sampleSetArray(sampleSetIndex);
+        trainingDataTensor = tensor(trainingSet{trainingSetIndex, cols});
         
         for q = 1:responseNum
-            diff0 = -2 * (trainingSet{dataIndex, q} - ttt(modelsTensor{q}, trainingDataTensor, 1:D_way));
+            
+            diff0 = -2 * (trainingSet{trainingSetIndex, q} - ttt(modelsTensor{q}, trainingDataTensor, 1:D_way));
             for r = 1:rank               
                 for d = 1:D_way
                     for i = 1:dims(d)
@@ -76,14 +84,15 @@ for iter = startIter+1:iterTotal
                     end
                 end
             end
+            
         end
     end
     
-%     for q = 1:responseNum
-%         for d = 1:D_way
-%             modelsGrad{q}{d} = modelsGrad{q}{d} / trainingSetSize;
-%         end
-%     end
+    for q = 1:responseNum
+        for d = 1:D_way
+            modelsGrad{q}{d} = modelsGrad{q}{d} / sampleSetSize;
+        end
+    end
     
     for d = 1:D_way
         for r = 1:rank
@@ -110,6 +119,7 @@ for iter = startIter+1:iterTotal
     
     disp(modelsGrad{1}{2}(2,1));
     
+    learningRate = learningRate0;
     newModels = models;
     for q = 1:responseNum
         for d = 1:D_way
@@ -119,9 +129,6 @@ for iter = startIter+1:iterTotal
     
     preTrainingFuncValue = trainingFuncValue;
     trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet);  
-    disp(learningRate);
-    disp(preTrainingFuncValue);
-    disp(trainingFuncValue);
     
     while trainingFuncValue >= preTrainingFuncValue
         
@@ -136,27 +143,31 @@ for iter = startIter+1:iterTotal
         end
 
         trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
-        disp(learningRate);
-        disp(preTrainingFuncValue);
-        disp(trainingFuncValue);
+        
     
     end
 
-    if trainingFuncValue < preTrainingFuncValue
+    if trainingFuncValue < shakyRate * preTrainingFuncValue
         models = newModels;
     else
         break;
     end
+    
+    disp(learningRate);
+    disp(preTrainingFuncValue);
+    disp(trainingFuncValue);
 
-    SaveTrainingStatus(iter, models);
-
-    preValidationFuncValue = validationFuncValue;
     validationFuncValue = CalcObjFunc(models, lambda, validationSet);
     disp('validation');
-    disp(preValidationFuncValue);
+    disp(minValidationFuncValue);
     disp(validationFuncValue);
-    if validationFuncValue >= overfittingRate * preValidationFuncValue
+    
+    SaveTrainingStatus(iter, models, trainingFuncValue, validationFuncValue);
+    
+    if validationFuncValue >= overfittingRate * minValidationFuncValue
         break;
+    else
+        minValidationFuncValue = min(minValidationFuncValue, validationFuncValue);
     end
     
     disp(' ');

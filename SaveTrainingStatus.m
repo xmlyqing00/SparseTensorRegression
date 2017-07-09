@@ -1,4 +1,4 @@
-function [ ] = SaveTrainingStatus( iter, models  )
+function [ ] = SaveTrainingStatus( iter, models, trainingFuncValue, validationFuncValue  )
 %SaveTrainingStatus Save the status and variables during the training process.
 
 responseNum = length(models);
@@ -18,6 +18,14 @@ for q = 1:responseNum
     save(['training/model_', num2str(iter), '_', num2str(q), '.mat'], 'model');
 end
 
+newResult = [iter, trainingFuncValue, validationFuncValue];
+if iter == 1
+    iterResults = newResult;
+else
+    load('training/iterResults.mat', 'iterResults');
+    iterResults = [iterResults; newResult];
+end
+save('training/iterResults.mat', 'iterResults');
 
 end
 
