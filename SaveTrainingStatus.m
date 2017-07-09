@@ -20,12 +20,12 @@ end
 
 newResult = [iter, trainingFuncValue, validationFuncValue];
 if iter == 1
-    iterResults = newResult;
+    trainingResults = newResult;
 else
-    load('training/iterResults.mat', 'iterResults');
-    iterResults = [iterResults; newResult];
+    load('training/trainingResults.mat', 'trainingResults');
+    trainingResults = [trainingResults; newResult];
 end
-save('training/iterResults.mat', 'iterResults');
+save('training/trainingResults.mat', 'trainingResults');
 
 end
 
