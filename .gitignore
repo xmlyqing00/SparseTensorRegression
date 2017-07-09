@@ -4,3 +4,6 @@ training/*.bmp
 
 
 Thumbs.db
+data/trainingSet.mat
+data/validationSet.mat
+data/testingSet.mat
