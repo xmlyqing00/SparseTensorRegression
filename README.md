@@ -32,16 +32,18 @@ Then we minimize the objective function Eq.(5) using mini-batch gradient descend
 
 ## Experiments
 
-- Small sample test: Passed.
+### Small sample test: Passed.
 
-  We choose a 3x3 matrix as pattern and train the model. The training process converges after 50 iterations.
-  ![equation](http://latex.codecogs.com/gif.latex?Generated%20Pattern%3D%5Cbegin%7Bbmatrix%7D%200%20%26%200%20%26%200%5C%5C%200%20%26%200%20%26%201%5C%5C%200%20%26%201%20%26%200%20%5Cend%7Bbmatrix%7D)
+We choose a 3x3 matrix as pattern and train the model. The training process converges after 50 iterations.
+![equation](http://latex.codecogs.com/gif.latex?Generated%20Pattern%3D%5Cbegin%7Bbmatrix%7D%200%20%26%200%20%26%200%5C%5C%200%20%26%200%20%26%201%5C%5C%200%20%26%201%20%26%200%20%5Cend%7Bbmatrix%7D)
 
-  ![equation](http://latex.codecogs.com/gif.latex?Estimated%20Pattern%20%3D%20%5Cbegin%7Bbmatrix%7D%20-0.003%20%26%200.001%20%26%200.012%20%5C%5C%200.012%20%26%200.130%20%26%200.897%20%5C%5C%20-0.008%20%26%200.922%20%26%200.087%20%5C%5C%20%5Cend%7Bbmatrix%7D)
+![equation](http://latex.codecogs.com/gif.latex?Estimated%20Pattern%20%3D%20%5Cbegin%7Bbmatrix%7D%20-0.003%20%26%200.001%20%26%200.012%20%5C%5C%200.012%20%26%200.130%20%26%200.897%20%5C%5C%20-0.008%20%26%200.922%20%26%200.087%20%5C%5C%20%5Cend%7Bbmatrix%7D)
 
-- Medium sample test: Undergoing.
+### Medium sample test: Undergoing.
 
-  The training process is **slow** due to my out of date laptop.
+The training process is **slow** due to my out of date laptop.
+
+![summary]('training/summary.png')
 
 ## Documents
 

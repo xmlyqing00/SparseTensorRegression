@@ -16,7 +16,7 @@ function [ dataset ] = GenerateData( datasetSize, predictorSize, responseNum, co
 patterns = cell(1, length(patternArray));
 for i = 1:length(patternArray)
     patternIndex = patternArray(i);
-    patternFileName = strcat('pattern', num2str(patternIndex), '.mat');
+    patternFileName = strcat('data/pattern', num2str(patternIndex), '.mat');
     loadStruct = load(patternFileName);
     patterns{i} = loadStruct.pattern;
 end

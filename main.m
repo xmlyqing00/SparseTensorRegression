@@ -9,15 +9,15 @@ close all;
 predictorSize = [64, 64];
 GeneratePattern(predictorSize);
 
-datasetSizeTotal = 750;
+datasetSizeTotal = 1500;
 responseNum = 2;
 correlation = 0.9;
 noiseLevel = 5;
 patternArray = [1, 2];
 GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray);
 
-lambda = 0;
-rank = 2;
+lambda = 1;
+rank = 3;
 load('data/trainingSet.mat', 'trainingSet');
 load('data/validationSet.mat', 'validationSet');
 load('data/testingSet.mat', 'testingSet');

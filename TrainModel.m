@@ -4,12 +4,12 @@ function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 %   Given Y and X, train model B.
 
 iterStart = 0;
-iterTotal = 2000;
+iterTotal = 4000;
 learningRate0 = 1e-2;
 minLearningRate = 1e-6;
 overfittingRate = 1.1;
 shakyRate = 1.1;
-sampleSetSize = 10;
+sampleSetSize = 5;
 
 [trainingSetSize, cols] = size(trainingSet);
 responseNum = cols - 1;
