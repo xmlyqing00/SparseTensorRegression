@@ -1,4 +1,5 @@
 *.asv
+training/*.mat
 training/*.bmp
 
 
