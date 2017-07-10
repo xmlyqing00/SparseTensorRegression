@@ -3,7 +3,7 @@ function [ returnStatus ] = GeneratePattern( patternSize )
 %   If the pattern files exist, then skip this function.
 
 %Check pattern files.
-if exist('data/pattern1.mat', 'file') ~= 0 && exist('data/pattern2.mat', 'file') ~= 0 && exist('data/pattern3.mat', 'file') ~= 0
+if exist('data/pattern1.mat', 'file') ~= 0 && exist('data/pattern2.mat', 'file') ~= 0 && exist('data/pattern3.mat', 'file') ~= 0 && exist('data/pattern4.mat', 'file') ~= 0
     return;
 end
 
@@ -30,12 +30,22 @@ end
 imwrite(pattern, 'data/pattern2.bmp');
 save('data/pattern2.mat', 'pattern');
 
+%Pattern five squares
+pattern = ones(patternSize);
+pattern(5:16, 11:22) = 0;
+pattern(51:62, 5:16) = 0;
+pattern(33:44, 21:32) = 0;
+pattern(29:40, 49:60) = 0;
+pattern(13:24, 44:55) = 0;
+imwrite(pattern, 'data/pattern3.bmp');
+save('data/pattern3.mat', 'pattern');
+
 %Pattern small
 pattern = zeros(3, 3);
 pattern(3,2) = 1;
 pattern(2,3) = 1;
-imwrite(pattern, 'data/pattern3.bmp');
-save('data/pattern3.mat', 'pattern');
+imwrite(pattern, 'data/pattern4.bmp');
+save('data/pattern4.mat', 'pattern');
 
 returnStatus = true;
 

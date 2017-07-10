@@ -23,7 +23,7 @@ end
 
 models = cell(1, responseNum);
 for i = 1:responseNum
-    models{i} = patterns{mod(i, length(patternArray)) + 1};
+    models{i} = patterns{mod(i-1, length(patternArray)) + 1};
 end
 
 mu = zeros(1, responseNum);
