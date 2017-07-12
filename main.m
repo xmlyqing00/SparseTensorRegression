@@ -14,7 +14,8 @@ responseNum = 3;
 correlation = 0.9;
 noiseLevel = 10;
 patternArray = [1, 2, 3];
-GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray);
+GenerateDataset(datasetSizeTotal, predictorSize, responseNum, ...
+    correlation, noiseLevel, patternArray);
 
 lambda = 10;
 rank = 3;

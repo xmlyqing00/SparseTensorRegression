@@ -42,7 +42,7 @@ for i = 1:datasetSize
         Y = sum(sum(models{j} .* X)) + e(j);
         dataset{i, j} = Y;
     end
-    dataset{i, responseNum+1} = X;
+    dataset{i, responseNum+1} = tensor(X);
 end
 
 end

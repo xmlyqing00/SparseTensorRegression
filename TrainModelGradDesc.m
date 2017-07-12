@@ -3,9 +3,9 @@ function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 %   Formula: Y = BX + e
 %   Given Y and X, train model B.
 
-iterStart = 0;
-iterTotal = 4000;
-learningRate0 = 1e-2;
+iterStart = 456;
+iterTotal = 40000;
+learningRate0 = 1e-3;
 minLearningRate = 1e-6;
 overfittingRate = 1.1;
 shakyRate = 1.1;
@@ -62,11 +62,10 @@ for iter = iterStart+1:iterTotal
     for sampleSetIndex = 1:sampleSetSize
         
         trainingSetIndex = sampleSetArray(sampleSetIndex);
-        trainingDataTensor = tensor(trainingSet{trainingSetIndex, cols});
         
         for q = 1:responseNum
             
-            diff0 = -2 * (trainingSet{trainingSetIndex, q} - ttt(modelsTensor{q}, trainingDataTensor, 1:D_way));
+            diff0 = -2 * (trainingSet{trainingSetIndex, q} - ttt(modelsTensor{q}, trainingSet{trainingSetIndex, cols}, 1:D_way));
             for r = 1:rank               
                 for d = 1:D_way
                     for i = 1:dims(d)
@@ -79,7 +78,7 @@ for iter = iterStart+1:iterTotal
                         diffComponent{d}(i,1) = 1;
                         diffTensor = ComposeTensor(diffComponent);
                         
-                        diff = diff0 * ttt(diffTensor, trainingDataTensor, 1:D_way);
+                        diff = diff0 * ttt(diffTensor, trainingSet{trainingSetIndex, cols}, 1:D_way);
                         modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + diff;
                         
                     end
@@ -111,7 +110,8 @@ for iter = iterStart+1:iterTotal
                 
                 for q = 1:responseNum
                     diff = models{q}{d}(i,r) / sumResult;
-                    modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + lambda * diff;
+                    modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + ...
+                        lambda * diff;
                 end
                 
             end
@@ -140,7 +140,8 @@ for iter = iterStart+1:iterTotal
         end
         for q = 1:responseNum
             for d = 1:D_way
-                newModels{q}{d} = models{q}{d} - learningRate * modelsGrad{q}{d};
+                newModels{q}{d} = models{q}{d} - ...
+                    learningRate * modelsGrad{q}{d};
             end
         end
 
@@ -170,7 +171,8 @@ for iter = iterStart+1:iterTotal
     if validationFuncValue >= overfittingRate * minValidationFuncValue
         break;
     else
-        minValidationFuncValue = min(minValidationFuncValue, validationFuncValue);
+        minValidationFuncValue = min(minValidationFuncValue, ...
+            validationFuncValue);
     end
     
     disp(' ');
