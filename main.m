@@ -9,17 +9,17 @@ close all;
 predictorSize = [64, 64];
 GeneratePattern(predictorSize);
 
-datasetSizeTotal = 1500;
-responseNum = 3;
+datasetSizeTotal = 750;
+responseNum = 1;
 correlation = 0.9;
 noiseLevel = 10;
-patternArray = [1, 2, 3];
-GenerateDataset(datasetSizeTotal, predictorSize, responseNum, ...
-    correlation, noiseLevel, patternArray);
+patternArray = [4];
+predictorSize = [3, 3];
+GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray);
 
-lambda = 10;
-rank = 3;
+lambda = 1;
+rank = 1;
 load('data/trainingSet.mat', 'trainingSet');
 load('data/validationSet.mat', 'validationSet');
 load('data/testingSet.mat', 'testingSet');
-models = TrainModel(lambda, rank, trainingSet, validationSet);
+models = TrainModelDerivation(lambda, rank, trainingSet, validationSet);

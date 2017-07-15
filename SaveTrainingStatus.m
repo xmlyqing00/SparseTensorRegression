@@ -1,4 +1,4 @@
-function [ saveStatus ] = SaveTrainingStatus( iter, models, trainingFuncValue, validationFuncValue  )
+function [ saveStatus ] = SaveTrainingStatus( iter, models, trainingFuncValue, validationFuncValue )
 %SaveTrainingStatus Save the status and variables during the training process.
 
 responseNum = length(models);

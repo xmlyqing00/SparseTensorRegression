@@ -3,8 +3,8 @@ function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
 %   Formula: Y = BX + e
 %   Given Y and X, train model B.
 
-iterStart = 456;
-iterTotal = 40000;
+iterStart = 0;
+iterTotal = 2000;
 learningRate0 = 1e-3;
 minLearningRate = 1e-6;
 overfittingRate = 1.1;
@@ -31,7 +31,7 @@ end
 % load('data/pattern1.mat', 'pattern');
 % models{2} = DecomposeTensor(tensor(pattern), rank);
 
-trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
+minTrainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 minValidationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
 for iter = iterStart+1:iterTotal
@@ -110,8 +110,7 @@ for iter = iterStart+1:iterTotal
                 
                 for q = 1:responseNum
                     diff = models{q}{d}(i,r) / sumResult;
-                    modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + ...
-                        lambda * diff;
+                    modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + lambda * diff;
                 end
                 
             end
@@ -129,10 +128,8 @@ for iter = iterStart+1:iterTotal
         end
     end
     
-    preTrainingFuncValue = trainingFuncValue;
     trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet);  
-    
-    while trainingFuncValue >= preTrainingFuncValue
+    while trainingFuncValue >= minTrainingFuncValue
         
         learningRate = learningRate / 2;
         if learningRate < minLearningRate
@@ -140,27 +137,26 @@ for iter = iterStart+1:iterTotal
         end
         for q = 1:responseNum
             for d = 1:D_way
-                newModels{q}{d} = models{q}{d} - ...
-                    learningRate * modelsGrad{q}{d};
+                newModels{q}{d} = models{q}{d} - learningRate * modelsGrad{q}{d};
             end
         end
 
         trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
-        
-    
+
     end
 
-    if trainingFuncValue < shakyRate * preTrainingFuncValue
+    disp('training');
+    disp(learningRate);
+    disp(minTrainingFuncValue);
+    disp(trainingFuncValue);
+    
+    if trainingFuncValue < shakyRate * minTrainingFuncValue
+        minTrainingFuncValue = min(minTrainingFuncValue, trainingFuncValue);
         models = newModels;
     else
         break;
     end
     
-    disp('training');
-    disp(learningRate);
-    disp(preTrainingFuncValue);
-    disp(trainingFuncValue);
-
     validationFuncValue = CalcObjFunc(models, lambda, validationSet);
     disp('validation');
     disp(minValidationFuncValue);
@@ -171,8 +167,7 @@ for iter = iterStart+1:iterTotal
     if validationFuncValue >= overfittingRate * minValidationFuncValue
         break;
     else
-        minValidationFuncValue = min(minValidationFuncValue, ...
-            validationFuncValue);
+        minValidationFuncValue = min(minValidationFuncValue, validationFuncValue);
     end
     
     disp(' ');

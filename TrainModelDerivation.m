@@ -5,8 +5,8 @@ function [ models ] = TrainModelDerivation( lambda, rank, trainingSet, ...
 
 iterStart = 0;
 iterTotal = 100;
-overfittingRate = 1.1;
-shakyRate = 1.1;
+overfittingRate = 1.2;
+shakyRate = 2;
 
 [trainingSetSize, cols] = size(trainingSet);
 responseNum = cols - 1;
@@ -28,142 +28,87 @@ end
 % load('data/pattern1.mat', 'pattern');
 % models{2} = DecomposeTensor(tensor(pattern), rank);
 
-trainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
+minTrainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 minValidationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
-XMatrices = cell(trainingSetSize, D_way);
+XMat = cell(trainingSetSize, D_way);
 for dataIndex = 1: trainingSetSize
     for d = 1:D_way
         cdims = 1:D_way;
         cdims(d) = [];
-        XMatrices{dataIndex, d} = tenmat(trainingSet{dataIndex, cols}, cdims, 't');
+        XMat{dataIndex, d} = tenmat(trainingSet{dataIndex, cols}, cdims, 't');
     end
 end
 
-XMatricesTilde = cell(trainingSetSize, responseNum, D_way);
+XMatTilde = cell(trainingSetSize, responseNum, D_way);
 for iter = iterStart+1:iterTotal
     
     disp(iter);
     
     newModels = models;
-    
-    for q = 1:responseNum
-        for d = 1:D_way
-            khatriraoResult = ones(1, rank);
-            for d2 = D_way:-1:1
-                if d2 ~= d
-                    khatriraoResult = khatrirao(khatriraoResult, models{q}{d2});
-                end
-            end
-            for dataIndex = 1:trainingSetSize
-                XMatricesTilde{dataIndex, q, d} = XMatrices{dataIndex, d} * khatriraoResult;
-            end
-        end
-    end
-    
-    
-            for dataIndex = 1:trainingSetSize
-        
-            
-            diff0 = -2 * ...
-                (trainingSet{trainingSetIndex, q} - ...
-                ttt(modelsTensor{q}, trainingDataTensor, 1:D_way));
-            for r = 1:rank               
-                for d = 1:D_way
-                    for i = 1:dims(d)
-                        
-                        diffComponent = cell(1, D_way);
-                        for d2 = 1:D_way
-                            diffComponent{d2} = models{q}{d2}(:,r);
-                        end
-                        diffComponent{d}(:,1) = 0;
-                        diffComponent{d}(i,1) = 1;
-                        diffTensor = ComposeTensor(diffComponent);
-                        
-                        diff = diff0 * ttt(diffTensor, ...
-                            trainingDataTensor, 1:D_way);
-                        modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + diff;
-                        
-                    end
-                end
-            end
-            
-        end
-    end
-    
-    for q = 1:responseNum
-        for d = 1:D_way
-            modelsGrad{q}{d} = modelsGrad{q}{d} / sampleSetSize;
-        end
-    end
-    
     for d = 1:D_way
-        for r = 1:rank
-            for i = 1:dims(d)
-                
-                sumResult = 0;
-                for q = 1:responseNum
-                    sumResult = sumResult + (models{q}{d}(i,r)) ^ 2;
-                end
-                sumResult = sumResult ^ 0.5;
-                
-                if sumResult == 0
-                    continue;
-                end
-                
-                for q = 1:responseNum
-                    diff = models{q}{d}(i,r) / sumResult;
-                    modelsGrad{q}{d}(i,r) = modelsGrad{q}{d}(i,r) + ...
-                        lambda * diff;
-                end
-                
-            end
-        end
-    end
-    
-    disp('gradient');
-    disp(modelsGrad{1}{2}(2,1));
-    
-    learningRate = learningRate0;
-    newModels = models;
-    for q = 1:responseNum
-        for d = 1:D_way
-            newModels{q}{d} = models{q}{d} - learningRate * modelsGrad{q}{d};
-        end
-    end
-    
-    preTrainingFuncValue = trainingFuncValue;
-    trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet);  
-    
-    while trainingFuncValue >= preTrainingFuncValue
         
-        learningRate = learningRate / 2;
-        if learningRate < minLearningRate
-            break;
-        end
         for q = 1:responseNum
-            for d = 1:D_way
-                newModels{q}{d} = models{q}{d} - ...
-                    learningRate * modelsGrad{q}{d};
+            khatriraoResult = ones(1, rank);
+            for d2 = 1:D_way
+                if d2 ~= d
+                    khatriraoResult = khatrirao(khatriraoResult, newModels{q}{d2});
+                end
+            end
+            rows = dims(d) * rank;
+            for dataIndex = 1:trainingSetSize
+                XMatTilde{dataIndex, q, d} = XMat{dataIndex, d} * khatriraoResult;
+                XMatTilde{dataIndex, q, d} = reshape(XMatTilde{dataIndex, q, d}.data, [rows, 1]);
             end
         end
-
-        trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
         
-    
+        mu = zeros(dims(d), rank);
+        for i = 1:dims(d)
+            for r = 1:rank
+                mu(i, r) = 0;
+                for q = 1:responseNum
+                    mu(i, r) = mu(i, r) + models{q}{d}(i, r) ^ 2;
+                end
+                mu(i, r) = 1 / mu(i, r) ^ 0.5;
+            end
+        end
+        
+        rows = dims(d) * rank;
+        diagMat = diag(reshape(mu, [rows, 1]));
+        
+        for q = 1:responseNum
+            item1 = 0;
+            item2 = 0;
+            for dataIndex = 1:trainingSetSize
+                item1 = item1 + XMatTilde{dataIndex, q, d} * XMatTilde{dataIndex, q, d}';
+                item2 = item2 + trainingSet{dataIndex, q} * XMatTilde{dataIndex, q, d};
+            end
+            item1 = item1 / trainingSetSize;
+            item1 = item1 - lambda / 2 * diagMat;
+            item2 = item2 / trainingSetSize;
+            newB = item1 \ item2;
+            
+            newModels{q}{d} = reshape(newB, [dims(d), rank]);
+            
+            disp(CalcObjFunc(newModels, lambda, trainingSet));
+            
+        end
+        
     end
+    
+    trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
 
-    if trainingFuncValue < shakyRate * preTrainingFuncValue
+    disp('training');
+    disp(minTrainingFuncValue);
+    disp(trainingFuncValue);
+    
+    if trainingFuncValue < shakyRate * minTrainingFuncValue
+        minTrainingFuncValue = min(minTrainingFuncValue, trainingFuncValue);
         models = newModels;
     else
         break;
     end
     
-    disp('training');
-    disp(learningRate);
-    disp(preTrainingFuncValue);
-    disp(trainingFuncValue);
-
     validationFuncValue = CalcObjFunc(models, lambda, validationSet);
     disp('validation');
     disp(minValidationFuncValue);
@@ -172,16 +117,12 @@ for iter = iterStart+1:iterTotal
     SaveTrainingStatus(iter, models, trainingFuncValue, validationFuncValue);
     
     if validationFuncValue >= overfittingRate * minValidationFuncValue
-        break;
-    else
-        minValidationFuncValue = min(minValidationFuncValue, ...
-            validationFuncValue);
+        %break;
     end
+    minValidationFuncValue = min(minValidationFuncValue, validationFuncValue);
     
     disp(' ');
     
 end
 
-
 end
-
