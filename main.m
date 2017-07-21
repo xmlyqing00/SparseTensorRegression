@@ -7,18 +7,19 @@ clear;
 close all;
 
 predictorSize = [64, 64];
-GeneratePattern(predictorSize);
+override = false;
+GeneratePattern(predictorSize, override);
 
-datasetSizeTotal = 750;
-responseNum = 1;
+datasetSizeTotal = 1500;
+responseNum = 4;
 correlation = 0.9;
 noiseLevel = 10;
-patternArray = [4];
-predictorSize = [3, 3];
-GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray);
+patternArray = [1, 2, 3, 4];
+override = false;
+GenerateDataset(datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray, override);
 
-lambda = 1;
-rank = 1;
+lambda = 10;
+rank = 3;
 load('data/trainingSet.mat', 'trainingSet');
 load('data/validationSet.mat', 'validationSet');
 load('data/testingSet.mat', 'testingSet');
