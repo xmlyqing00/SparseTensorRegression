@@ -88,11 +88,11 @@ for iter = iterStart+1:iterTotal
         end
     end
     
-    for q = 1:responseNum
-        for d = 1:D_way
-            modelsGrad{q}{d} = modelsGrad{q}{d} / sampleSetSize;
-        end
-    end
+%     for q = 1:responseNum
+%         for d = 1:D_way
+%             modelsGrad{q}{d} = modelsGrad{q}{d} / sampleSetSize;
+%         end
+%     end
     
     for d = 1:D_way
         for r = 1:rank

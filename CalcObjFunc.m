@@ -19,12 +19,11 @@ end
 funcValuePart1 = 0;
 for dataIndex = 1:datasetSize
     for q = 1:responseNum
-        loss = (dataset{dataIndex, q} - ...
-            ttt(modelsTensor{q}, dataset{dataIndex, cols}, 1:D_way)) ^ 2;
+        loss = (dataset{dataIndex, q} - ttt(modelsTensor{q}, dataset{dataIndex, cols}, 1:D_way)) ^ 2;
         funcValuePart1 = funcValuePart1 + loss;
     end
 end
-funcValuePart1 = funcValuePart1 / datasetSize;
+% funcValuePart1 = funcValuePart1 / datasetSize;
 
 funcValuePart2 = 0;
 for d = 1:D_way
