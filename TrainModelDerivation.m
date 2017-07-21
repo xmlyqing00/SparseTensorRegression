@@ -2,9 +2,9 @@ function [ models ] = TrainModelDerivation( lambda, rank, trainingSet, validatio
 %TrainModelDerivation Train the model by the analytical solution and
 %derivation iteration.
 
-iterStart = 100;
+iterStart = 0;
 iterTotal = 200;
-overfittingRate = 1.2;
+overfittingRate = 1.1;
 shakyRate = 1;
 
 [trainingSetSize, cols] = size(trainingSet);
@@ -84,42 +84,9 @@ for iter = iterStart+1:iterTotal
             end
             item1 = item1 - lambda / 2 * diagMat;
             newB = item1 \ item2;
-%             
-%             
-%             
-%             tmp = zeros(dims(d) * rank, 1);
-%             for dataIndex = 1:trainingSetSize
-%                 tmp = tmp + 2 * (trainingSet{dataIndex, 1} - XMatTilde{dataIndex, q}' * newB) * XMatTilde{dataIndex, q};
-%             end
-%             tmp = tmp;
-%             tmp = tmp + lambda * diagMat * newB;
-%            
-%             tmp2 = 0;
-%             for d2 = 1:D_way
-%                 mu2 = zeros(dims(d), rank);
-%                 for i = 1:dims(d)
-%                     for r = 1:rank
-%                         mu2(i, r) = 0;
-%                         for q2 = 1:responseNum 
-%                             mu2(i, r) = mu2(i, r) + models{q2}{d}(i, r) ^ 2;
-%                         end
-%                         mu2(i, r) = 1 / mu2(i, r) ^ 0.5;
-%                     end
-%                 end
-%                 if d2 == d
-%                     tmpB = newB;
-%                 else
-%                     tmpB = reshape(models{q
-%                 end
-%             end
-%             tmp = tmp + lambda * tmp2;
-%             disp(tmp);
-%             disp(sum(tmp) / length(tmp));
-%             disp(minTrainingFuncValue);
             
             newModels{q}{d} = reshape(newB, [dims(d), rank]);
             
-%             disp(CalcObjFunc(models, lambda, trainingSet));
         end
         
     end
