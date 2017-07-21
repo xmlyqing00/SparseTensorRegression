@@ -1,8 +1,11 @@
-function [ returnStatus ] = GenerateDataset( datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray )
+function [ returnStatus ] = GenerateDataset( datasetSizeTotal, predictorSize, responseNum, correlation, noiseLevel, patternArray, override )
 %GenerateDataset Generate three datasets: training, validation and testing.
 %   If the three datasets exist, then skip this function.
 
-if exist('data/trainingSet.mat', 'file') ~= 0 && exist('data/trainingSet.mat', 'file') ~= 0 && exist('data/trainingSet.mat', 'file') ~= 0
+if override == false && ...
+    exist('data/trainingSet.mat', 'file') ~= 0 && ...
+    exist('data/trainingSet.mat', 'file') ~= 0 && ...
+    exist('data/trainingSet.mat', 'file') ~= 0
     return;
 end
 

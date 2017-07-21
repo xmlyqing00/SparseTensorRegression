@@ -1,9 +1,14 @@
-function [ returnStatus ] = GeneratePattern( patternSize )
+function [ returnStatus ] = GeneratePattern( patternSize, override )
 %GeneratePattern Generate default patterns and save them to .mat files.
 %   If the pattern files exist, then skip this function.
 
 %Check pattern files.
-if exist('data/pattern1.mat', 'file') ~= 0 && exist('data/pattern2.mat', 'file') ~= 0 && exist('data/pattern3.mat', 'file') ~= 0 && exist('data/pattern4.mat', 'file') ~= 0
+if override == false && ...
+    exist('data/pattern1.mat', 'file') ~= 0 && ...
+    exist('data/pattern2.mat', 'file') ~= 0 && ...
+    exist('data/pattern3.mat', 'file') ~= 0 && ...
+    exist('data/pattern4.mat', 'file') ~= 0 && ...
+    exist('data/pattern5.mat', 'file') ~= 0
     return;
 end
 
@@ -40,12 +45,21 @@ pattern(13:24, 44:55) = 0;
 imwrite(pattern, 'data/pattern3.bmp');
 save('data/pattern3.mat', 'pattern');
 
+%Pattern hollow square
+pattern = ones(patternSize);
+pattern(17:20, 17:48) = 0;
+pattern(45:48, 17:48) = 0;
+pattern(17:48, 17:20) = 0;
+pattern(17:48, 45:48) = 0;
+imwrite(pattern, 'data/pattern4.bmp');
+save('data/pattern4.mat', 'pattern');
+
 %Pattern small
 pattern = zeros(3, 3);
 pattern(3,2) = 1;
 pattern(2,3) = 1;
-imwrite(pattern, 'data/pattern4.bmp');
-save('data/pattern4.mat', 'pattern');
+imwrite(pattern, 'data/pattern5.bmp');
+save('data/pattern5.mat', 'pattern');
 
 returnStatus = true;
 
