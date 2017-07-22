@@ -47,6 +47,8 @@ The operatoin before lambda should be **minus** instead of **plus** shown in the
 
 The experiment results are below. We compare two training methods: one is naive mini-batch gradient descending (TrainModelGradDesc.m), the other one is updating the model by closed form solution (TrainModelDerivative.m), proposed in the paper. Obviously, the first training method is time-consuming and its results are less accurate than the second training method.
 
+Mini-batch gradient descending method needs about 24 hours to reach convergence, while derivative closed form updating method needs about 5 minutes to reach convergence.
+
 ![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/summary.png)
 
 ## Documents
