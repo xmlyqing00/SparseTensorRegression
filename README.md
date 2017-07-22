@@ -32,22 +32,13 @@ Then we minimize the objective function Eq.(5) using mini-batch gradient descend
 
 ## Experiments
 
-### Small sample test: Passed.
-
-We choose a 3x3 matrix as pattern and train the model. The training process converges after 50 iterations.
-![equation](http://latex.codecogs.com/gif.latex?Generated%20Pattern%3D%5Cbegin%7Bbmatrix%7D%200%20%26%200%20%26%200%5C%5C%200%20%26%200%20%26%201%5C%5C%200%20%26%201%20%26%200%20%5Cend%7Bbmatrix%7D)
-
-![equation](http://latex.codecogs.com/gif.latex?Estimated%20Pattern%20%3D%20%5Cbegin%7Bbmatrix%7D%20-0.003%20%26%200.001%20%26%200.012%20%5C%5C%200.012%20%26%200.130%20%26%200.897%20%5C%5C%20-0.008%20%26%200.922%20%26%200.087%20%5C%5C%20%5Cend%7Bbmatrix%7D)
-
-### Medium sample test: Undergoing.
-
 The training process is **slow** due to my out of date laptop.
 
 ![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary_GradDesc.png)
 
 ## Documents
 
-- **demo.m** demo script contains three components: 1. Generate the patterns. 2. Generate the datasets. 3. Estimate the  models.
+- **demo_reg.m** demo script contains three components: 1. Generate the patterns. 2. Generate the datasets. 3. Estimate the  models.
 - **CalcObjFunc.m** Calculate the value of objective function Eq.(5).
 - **ComposeTensor.m** Compose the components to a tensor. This is the inverse operation of CP decomposition.
 - **DecomposeTensor.m** Decompose the tensor to the components by the input argument *rank*. The actual decomposition method is CP decomposition *cp_als*.
