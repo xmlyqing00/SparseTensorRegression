@@ -1,7 +1,7 @@
 *.asv
 training/*.mat
 training/*.bmp
-
+release/*
 
 Thumbs.db
 data/trainingSet.mat
