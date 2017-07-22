@@ -43,12 +43,11 @@ We choose a 3x3 matrix as pattern and train the model. The training process conv
 
 The training process is **slow** due to my out of date laptop.
 
-![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary.png)
+![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary_GradDesc.png)
 
 ## Documents
 
-- **main.m** Main script contains three components: 1. Generate the patterns. 2. Generate the datasets. 3. Estimate the  models.
-
+- **demo.m** demo script contains three components: 1. Generate the patterns. 2. Generate the datasets. 3. Estimate the  models.
 - **CalcObjFunc.m** Calculate the value of objective function Eq.(5).
 - **ComposeTensor.m** Compose the components to a tensor. This is the inverse operation of CP decomposition.
 - **DecomposeTensor.m** Decompose the tensor to the components by the input argument *rank*. The actual decomposition method is CP decomposition *cp_als*.
@@ -59,7 +58,13 @@ The training process is **slow** due to my out of date laptop.
 - **InitModels.m** Initialize the models by random values.
 - **LoadModels.m** Load the model from files. These files may be the snapshot of the last training, saved by *SaveTrainingStatus.m*.
 - **SaveTrainingStatus.m** Save the snapshot of the training process, including temporal models values.
-- **TrainModel.m** Estimate the model using Sparse Tensor Regression method  with the generated datasets.
+- **TrainModelDerivation.m** We let the partial derivative to be zero and update the model B by its closed-form solution.
+- **TrainModelGradDesc.m** Estimate the model by mini-batch gradient descending.
+
+## License
+
+- Author: Space Liang
+- License: Apache License 2.0
 
 ## References
 
