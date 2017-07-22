@@ -12,6 +12,7 @@
 clc;
 clear;
 close all;
+addpath('src/');
 
 disp('Sparse Tensor Regression');
 disp('Copyright 2017, Space Liang. Email: root [at] lyq.me');
