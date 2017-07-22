@@ -28,13 +28,15 @@ Then we minimize the objective function Eq.(5) using mini-batch gradient descend
 
 1. Install Matlab [tensor_toolbox](http://www.sandia.gov/~tgkolda/TensorToolbox/index-2.6.html).
 2. Download this repository in the folder.
-3. Run the script *main* in the Matlab environment.
+3. Run the script *demo_reg* in the Matlab environment.
 
 ## Experiments
 
-The training process is **slow** due to my out of date laptop.
+We compare two training methods: one is naive **mini-batch gradient descending** (TrainModelGradDesc.m), the other one is updating the model by closed-form solution (TrainModelDerivative.m), proposed in the paper.
 
-![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary_GradDesc.png)
+![summary_GradDesc](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary_GradDesc.png)
+
+![summary_GradDesc](https://github.com/LyqSpace/SparseTensorRegression/blob/master/training/summary_Derivative_lambda10_rank3.png)
 
 ## Documents
 
