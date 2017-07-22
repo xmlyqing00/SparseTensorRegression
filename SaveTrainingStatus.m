@@ -1,11 +1,20 @@
 function [ saveStatus ] = SaveTrainingStatus( iter, models, trainingFuncValue, validationFuncValue )
-%SaveTrainingStatus Save the status and variables during the training process.
+%SaveTrainingStatus Save the training status and variables to files during the training process.
+%   Parameters:
+%       iter: The current number of iterations.
+%       models: The components of the estimated models.
+%       trainingFuncValue: The objective function value of trainingSet.
+%       validationFuncValue: The objective function value of validationSet.
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 responseNum = length(models);
 D_way = length(models{1});
 dims = zeros(1, D_way);
 for d = 1:D_way
-    [dims(d), rank] = size(models{1}{d});
+    [dims(d), ~] = size(models{1}{d});
 end
 
 for q = 1:responseNum

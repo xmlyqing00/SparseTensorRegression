@@ -1,6 +1,17 @@
 function [ funcValue ] = CalcObjFunc( models, lambda, dataset )
-%CalcObjFunc Calculate the object function by given lambda and dataset
-%   L = (Y - BX)^2 + \lambda*|B|
+%CalcObjFunc Calculate the objective function by the given models, lambda and dataset.
+%   Parameters:
+%       models: D_way components of tensor and its format is a cell of matrices. 
+%       lambda: The coefficient of the penalty item.
+%       dataset: A cell of two dimensions array. Each sample occupies a
+%       line and the first q columns are the responses. The (q+1)th column
+%       is the predictor.
+%
+%   funcValue = \sum(Y - model * dataset)^2 + \lambda * |model|
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 [datasetSize, cols] = size(dataset);
 responseNum = cols - 1;

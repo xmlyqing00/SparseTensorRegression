@@ -1,10 +1,23 @@
 function [ models ] = TrainModelDerivation( lambda, rank, trainingSet, validationSet )
-%TrainModelDerivation Train the model by the analytical solution and
-%derivation iteration.
+%TrainModelDerivation Train the model by the analytical solution and derivation iteration.
+%   Parameters:
+%       lambda: The coefficent of the penalty term.
+%       rank: A integer for CP decomposition / composition.
+%       trainingSet: A set of samples for the model estimation.
+%       validationSet: A set of sample for avoiding overfitting.
+%
+%   Formula: funcValue = \sum(Y - model * dataset)^2 + \lambda * |model|
+%   Given Y, dataset and lambda.
+%   We let the partial derivative to be zero and update the model B by its
+%   closed-form solution.
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 iterStart = 0;
-iterTotal = 200;
-overfittingRate = 1.1;
+iterTotal = 10;
+overfittingRate = 1.5;
 shakyRate = 1;
 
 [trainingSetSize, cols] = size(trainingSet);
@@ -20,13 +33,6 @@ else
     models = LoadModels(iterStart, responseNum);
 end
 
-% Set the models as the target models.
-% models = cell(1, 2);
-% load('data/pattern2.mat', 'pattern');
-% models{1} = DecomposeTensor(tensor(pattern), rank);
-% load('data/pattern1.mat', 'pattern');
-% models{2} = DecomposeTensor(tensor(pattern), rank);
-
 minTrainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 minValidationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
@@ -39,9 +45,10 @@ for dataIndex = 1: trainingSetSize
     end
 end
 
+tic;
+disp('Train the model. Running...');
+
 for iter = iterStart+1:iterTotal
-    
-    disp(iter);
 
     newModels = models;
     for d = 1:D_way
@@ -92,10 +99,6 @@ for iter = iterStart+1:iterTotal
     end
     
     trainingFuncValue = CalcObjFunc(newModels, lambda, trainingSet); 
-
-    disp('training');
-    disp(minTrainingFuncValue);
-    disp(trainingFuncValue);
     
     if trainingFuncValue < shakyRate * minTrainingFuncValue
         minTrainingFuncValue = min(minTrainingFuncValue, trainingFuncValue);
@@ -105,19 +108,18 @@ for iter = iterStart+1:iterTotal
     end
     
     validationFuncValue = CalcObjFunc(models, lambda, validationSet);
-    disp('validation');
-    disp(minValidationFuncValue);
-    disp(validationFuncValue);
     
+    disp(['    Iter: ', num2str(iter), '. TrainingSet: ', num2str(trainingFuncValue), '. ValidationSet: ', num2str(validationFuncValue)]);
     SaveTrainingStatus(iter, models, trainingFuncValue, validationFuncValue);
     
     if validationFuncValue >= overfittingRate * minValidationFuncValue
-        %break;
+        break;
     end
     minValidationFuncValue = min(minValidationFuncValue, validationFuncValue);
     
-    disp(' ');
-    
 end
+
+disp('Train the model. Finish.');
+toc;
 
 end

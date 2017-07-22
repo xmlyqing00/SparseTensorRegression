@@ -1,8 +1,14 @@
 function [ drawStatus ] = DrawTrainingResults( responseNum )
 %DrawTrainingResults Draw the training results and the estimated models.
+%   Parameters:
+%       responseNum: The number of responses.
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 load('training/trainingResults.mat', 'trainingResults');
-[iterTotal, cols] = size(trainingResults);
+[iterTotal, ~] = size(trainingResults);
 figure;
 
 subplot(responseNum + 1, 2, [1, 2]);

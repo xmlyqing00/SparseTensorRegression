@@ -1,7 +1,19 @@
-function [ models ] = TrainModel( lambda, rank, trainingSet, validationSet )
+function [ models ] = TrainModelGradDesc( lambda, rank, trainingSet, validationSet )
 %TrainModel Train the models by trainingSet and validationSet.
-%   Formula: Y = BX + e
-%   Given Y and X, train model B.
+%   Parameters:
+%       lambda: The coefficent of the penalty term.
+%       rank: A integer for CP decomposition / composition.
+%       trainingSet: A set of samples for the model estimation.
+%       validationSet: A set of sample for avoiding overfitting.
+%
+%   Formula: funcValue = \sum(Y - model * dataset)^2 + \lambda * |model|
+%   Given Y, dataset and lambda.
+%   Train model B by mini-batch gradient descending.
+%   B(t+1) = B(t) - learningRate * dfuncValue/dB
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 iterStart = 0;
 iterTotal = 2000;
@@ -24,25 +36,12 @@ else
     models = LoadModels(iterStart, responseNum);
 end
 
-% Set the models as the target models.
-% models = cell(1, 2);
-% load('data/pattern2.mat', 'pattern');
-% models{1} = DecomposeTensor(tensor(pattern), rank);
-% load('data/pattern1.mat', 'pattern');
-% models{2} = DecomposeTensor(tensor(pattern), rank);
-
 minTrainingFuncValue = CalcObjFunc(models, lambda, trainingSet);
 minValidationFuncValue = CalcObjFunc(models, lambda, validationSet);
 
 for iter = iterStart+1:iterTotal
     
     disp(iter);
-%     models{1}{2}(2,1) = models{1}{2}(2,1) + 1e-5;
-%     t1 = CalcObjFunc(models, lambda, trainingSet);
-%     models{1}{2}(2,1) = models{1}{2}(2,1) - 2e-5;
-%     t2 = CalcObjFunc(models, lambda, trainingSet);
-%     x = (t1 - t2) / (2e-5);
-%     disp(x);
     
     modelsTensor = cell(1, responseNum);
     for q = 1:responseNum

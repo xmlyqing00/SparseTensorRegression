@@ -1,6 +1,15 @@
 function [ returnStatus ] = GeneratePattern( patternSize, override )
 %GeneratePattern Generate default patterns and save them to .mat files.
-%   If the pattern files exist, then skip this function.
+%   Parameters:
+%       patternSize: The size of predictor.
+%       override: The boolean flag decides whether to re-create new datasets.
+%       
+%   If the override falg is false and the pattern files exist, then skip 
+%   this function.
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 %Check pattern files.
 if override == false && ...
@@ -9,6 +18,8 @@ if override == false && ...
     exist('data/pattern3.mat', 'file') ~= 0 && ...
     exist('data/pattern4.mat', 'file') ~= 0 && ...
     exist('data/pattern5.mat', 'file') ~= 0
+
+    disp('Generate the patterns. Skip.');
     return;
 end
 
@@ -61,6 +72,7 @@ pattern(2,3) = 1;
 imwrite(pattern, 'data/pattern5.bmp');
 save('data/pattern5.mat', 'pattern');
 
+disp('Generate the patterns. Finish.');
 returnStatus = true;
 
 end

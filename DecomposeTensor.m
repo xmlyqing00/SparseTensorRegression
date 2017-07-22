@@ -1,8 +1,15 @@
 function [ components ] = DecomposeTensor( inputTensor, rank )
 %DecomposeTensor Decompose the input tensor into components.
-%   inputTensor is a tensor. 
-%   rank is the argument for the cp_als(X,R).
-%   The output components is multiplied by the estimated lambdas.
+%   Parameters:
+%      inputTensor: A tensor. 
+%      rank: The argument for the cp_als(X,R).
+%
+%   The output components is multiplied by the root square of the 
+%   estimated lambdas.
+%
+%Sparse Tensor Regression
+%Copyright 2017, Space Liang. Email: root [at] lyq.me
+%
 
 tensorComponents = cp_als(inputTensor, rank);
 D_way = length(tensorComponents.U);
