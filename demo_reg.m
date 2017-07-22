@@ -42,7 +42,7 @@ load('data/trainingSet.mat', 'trainingSet');
 load('data/validationSet.mat', 'validationSet');
 load('data/testingSet.mat', 'testingSet');
 % The best training method.
-models = TrainModelDerivation(lambda, rank, trainingSet, validationSet);
+models = TrainModelDerivative(lambda, rank, trainingSet, validationSet);
 % This training method is slow and inacurate.
 % models = TrainModelGradDesc(lambda, rank, trainingSet, validationSet);
 

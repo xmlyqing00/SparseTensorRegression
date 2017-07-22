@@ -1,5 +1,5 @@
 function [ models ] = TrainModelGradDesc( lambda, rank, trainingSet, validationSet )
-%TrainModel Train the models by trainingSet and validationSet.
+%TrainModelGradDesc Train the models with trainingSet by mini-batch gradient descending.
 %   Parameters:
 %       lambda: The coefficent of the penalty term.
 %       rank: A integer for CP decomposition / composition.

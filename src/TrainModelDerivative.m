@@ -1,5 +1,5 @@
-function [ models ] = TrainModelDerivation( lambda, rank, trainingSet, validationSet )
-%TrainModelDerivation Train the model by the analytical solution and derivation iteration.
+function [ models ] = TrainModelDerivative( lambda, rank, trainingSet, validationSet )
+%TrainModelDerivative Train the model by the analytical solution and derivation iteration.
 %   Parameters:
 %       lambda: The coefficent of the penalty term.
 %       rank: A integer for CP decomposition / composition.
