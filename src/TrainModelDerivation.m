@@ -18,7 +18,7 @@ function [ models ] = TrainModelDerivation( lambda, rank, trainingSet, validatio
 iterStart = 0;
 iterTotal = 10;
 overfittingRate = 1.5;
-shakyRate = 1;
+shakyRate = 1.05;
 
 [trainingSetSize, cols] = size(trainingSet);
 responseNum = cols - 1;

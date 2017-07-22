@@ -1,7 +1,8 @@
-function [ drawStatus ] = DrawTrainingResults( responseNum )
+function [ drawStatus ] = DrawTrainingResults( responseNum, patternArray )
 %DrawTrainingResults Draw the training results and the estimated models.
 %   Parameters:
 %       responseNum: The number of responses.
+%       patternArray: The array of pattern indexes.
 %
 %Sparse Tensor Regression
 %Copyright 2017, Space Liang. Email: root [at] lyq.me
@@ -22,7 +23,7 @@ ylabel('Objective Function Value');
 
 for q = 1:responseNum
     subplot(responseNum + 1, 2, 1 + q * 2);
-    pattern = imread(['data/pattern', num2str(q), '.bmp']);
+    pattern = imread(['data/pattern', num2str(patternArray(q)), '.bmp']);
     imshow(pattern);
     title('Generated Pattern');
 
