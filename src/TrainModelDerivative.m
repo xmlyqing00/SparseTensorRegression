@@ -16,9 +16,9 @@ function [ models ] = TrainModelDerivative( lambda, rank, trainingSet, validatio
 %
 
 iterStart = 0;
-iterTotal = 10;
+iterTotal = 100;
 overfittingRate = 1.5;
-shakyRate = 1.05;
+shakyRate = 1.1;
 
 [trainingSetSize, cols] = size(trainingSet);
 responseNum = cols - 1;
@@ -89,7 +89,7 @@ for iter = iterStart+1:iterTotal
                 item1 = item1 + XMatTilde{dataIndex, q} * XMatTilde{dataIndex, q}';
                 item2 = item2 + trainingSet{dataIndex, q} * XMatTilde{dataIndex, q};
             end
-            item1 = item1 - lambda / 2 * diagMat;
+            item1 = item1 + lambda / 2 * diagMat;
             newB = item1 \ item2;
             
             newModels{q}{d} = reshape(newB, [dims(d), rank]);
