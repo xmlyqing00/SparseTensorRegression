@@ -43,6 +43,8 @@ Here, we have two ways to find the minimum of the objective function. One is nai
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Cdpi%7B100%7D%20vec%28%5Cmathbf%7BB_%7Bjd%7D%7D%29%20%3D%20%5CBig%28%5Csum_%7Bi%3D1%7D%5En%5Cwidetilde%7B%5Cmathbf%7BX%7D%7D_%7Bijd%7D%5Cwidetilde%7B%5Cmathbf%7BX%7D%7D_%7Bijd%7D%5E%7B%5Cmathbf%7BT%7D%7D&plus;%5Cfrac%7B%5Clambda%7D%7B2%7Ddiag%5Cbig%28%5Cmu_%7Bd1%7D%5E%7B%281%29%7D%2C%5Ccdots%2C%5Cmu_%7Bdp_d%7D%5E%7B%281%29%7D%2C%5Ccdots%2C%5Cmu_%7Bd1%7D%5E%7B%28R%29%7D%2C%5Ccdots%2C%5Cmu_%7Bdp_d%7D%5E%7B%28R%29%7D%5Cbig%29%5CBig%29%5E%7B-1%7D%5Csum_%7Bi%3D1%7D%5En%5Cmathbf%7BY%7D_%7Bij%7D%5Cwidetilde%7B%5Cmathbf%7BX%7D%7D_%7Bijd%7D)
 
+where
+
 ![equation](http://latex.codecogs.com/gif.latex?%5Cmathbf%7B%5Cwidetilde%7BX%7D%7D_%7Bijd%7D%20%3D%20vec%5CBig%28%5Cmathbf%7BX%7D_%7Bi%28d%29%7D%28%5Cmathbf%7BB%7D_%7Bj1%7D%5Codot%5Ccdots%5Codot%5Cmathbf%7BB%7D_%7Bj%2Cd-1%7D%5Codot%5Cmathbf%7BB%7D_%7Bj%2Cd&plus;1%7D%5Codot%5Ccdots%5Codot%5Cmathbf%7BB%7D_%7BjD%7D%29%5CBig%29%20%5Cin%20%5Cmathbb%7BR%7D%5E%7BR_p_d%7D)
 
 ### Experiments
