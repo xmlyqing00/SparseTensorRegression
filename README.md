@@ -47,7 +47,7 @@ Here, we have two ways to find the minimum of the objective function. One is nai
 
 The experiment results are below. We compare two training methods: one is naive mini-batch gradient descending (TrainModelGradDesc.m), the other one is updating the model by closed form solution (TrainModelDerivative.m), proposed in the paper. Obviously, the first training method is time-consuming and its results are less accurate than the second training method.
 
-Mini-batch gradient descending method needs about 24 hours to reach convergence, while derivative closed form updating method needs about 5 minutes to reach convergence.
+Mini-batch gradient descending method needs about 24 hours to reach convergence, while derivative closed form updating method needs about 5 minutes to reach convergence. We set the rank = 3 and lambda = 100.
 
 ![summary](https://github.com/LyqSpace/SparseTensorRegression/blob/master/summary.png)
 
